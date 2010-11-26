@@ -9,7 +9,7 @@
  regexp: true, newcap: true, immed: true */
 
 (function (document) {
-    addEventListener("DOMContentLoaded", function () {
+    window.addEventListener("DOMContentLoaded", function () {
         var player,
             callback,
             interval = 1000; //1 second

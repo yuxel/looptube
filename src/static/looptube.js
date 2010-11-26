@@ -4,7 +4,7 @@
  regexp: true, newcap: true, immed: true */
 
 (function () {
-    addEventListener("load", function () {
+    window.addEventListener("load", function () {
         var button,
             isActive = false,
             icons = {
