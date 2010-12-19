@@ -4,33 +4,79 @@
 // ==/UserScript==
 
 /*jslint white: true, browser: true, devel: true, 
- windows: true, onevar: true, undef: true, 
+ windows: true, undef: true, 
  nomen: true, eqeqeq: true, plusplus: true, bitwise: true, 
  regexp: true, newcap: true, immed: true */
 /*global window */
 
 (function (document) {
     window.addEventListener("DOMContentLoaded", function () {
-        var player,
-            callback,
+        var timer,
             interval = 1000; //1 second
 
         //get player element for YouTube JS API
-        player = document.getElementById('movie_player');
+        var player = document.getElementById('movie_player');
 
         if (player) {
-            callback = function () {
-                //request isLoopTubeActived data from extension
-                opera.extension.postMessage("isLoopTubeActive");
-                opera.extension.onmessage = function (e) {
-                    //if it's activated and player stopped, seek to start 
-                    if (e.data === true && player.getPlayerState() === 0) {
-                        player.seekTo(0);
+
+            var callback = function () {
+                if (player.getPlayerState() === 0) {
+                    player.seekTo(0);
+                }
+            };
+
+            var startLoop = function () {
+                timer = setInterval(callback, interval);
+            };
+
+            var stopLoop = function () {
+                clearInterval(timer);
+            };
+
+            var createButton = function (defaultState) {
+                var buttonClass = defaultState ? "selected" : "";
+                var containerSpan = document.createElement('span');
+                var loopButtonStyle = "<style>";
+                loopButtonStyle += "#loopTubeButton {margin-bottom:9px !important}";
+                loopButtonStyle += "#loopTubeButton span.selected {color:#FF0000}";
+                loopButtonStyle += "</style>";
+
+                var loopButton = '<button id="loopTubeButton" ';
+                loopButton += 'class="yt-uix-tooltip-reverse yt-uix-button yt-uix-tooltip"'; 
+                loopButton += 'type="button" title="Loop this video">';
+                loopButton += '<span id="loopTubeSpan" class="' + buttonClass + '">Loop</span>';
+                loopButton += '</button>';
+
+                containerSpan.innerHTML = loopButtonStyle + loopButton;
+                document.getElementById("watch-actions-right").appendChild(containerSpan);
+
+                var loopTubeSpan = document.getElementById("loopTubeSpan");
+
+                if (defaultState) {
+                    startLoop();
+                }
+
+                containerSpan.onclick = function () {
+                    var className = loopTubeSpan.className;
+                    if (className === "selected") {
+                        className = "";
+                        stopLoop();
                     }
+                    else {
+                        className = "selected";
+                        startLoop();
+                    }
+
+                    loopTubeSpan.className = className;
                 };
             };
 
-            setInterval(callback, interval);
+            //request isLoopTubeActived data from extension
+            opera.extension.postMessage("getDefaultBehavior");
+            opera.extension.onmessage = function (e) {
+                createButton(e.data);
+            };
+
         }
     }, false);
 }(document));

@@ -25,12 +25,12 @@
         //change isActive status on click
         button.addEventListener("click", function () {
             if (isActive) {
-                button.title = "LoopTube Disabled";
+                button.title = "Loop disabled by default";
                 button.icon = icons.deActivated;
                 isActive = false;
             }
             else {
-                button.title = "LoopTube Enabled";
+                button.title = "LoopTube enabled by default";
                 button.icon = icons.activated;
                 isActive = true;
             }
@@ -38,7 +38,7 @@
 
         //send response to userjs
         opera.extension.onmessage = function (e) {
-            if (e.data === "isLoopTubeActive") { 
+            if (e.data === "getDefaultBehavior") { 
                 e.source.postMessage(isActive); 
             }
         };
