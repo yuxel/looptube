@@ -5,6 +5,7 @@
 /*global window */
 
 (function () {
+    return true; //adding button to toolbar disabled
     window.addEventListener("load", function () {
         var button,
             isActive = false,
