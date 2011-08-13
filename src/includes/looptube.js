@@ -73,12 +73,8 @@
                 };
             };
 
-            //request isLoopTubeActived data from extension
-            opera.extension.postMessage("getDefaultBehavior");
-            opera.extension.onmessage = function (e) {
-                createButton(e.data);
-            };
-
+            var state = widget.preferences.alwaysLoop ? true : false;
+            createButton(state);
         }
     }, false);
 }(document));
