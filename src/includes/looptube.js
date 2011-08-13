@@ -1,6 +1,8 @@
 // ==UserScript==
 // @include        http://*.youtube.com/watch?v=*
 // @include        http://youtube.com/watch?v=*
+// @include        https://*.youtube.com/watch?v=*
+// @include        https://*.youtube.com/watch?v=*
 // ==/UserScript==
 
 /*jslint white: true, browser: true, devel: true, 
