@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>LoopTube Options</title>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        body {
+            background: #666;
+        }
+        #options {
+            background: #FFF url('icons/looptube.png') no-repeat center top;
+            padding: 150px 20px 20px 20px;
+            border:1px dotted #BBB;
+            width: 400px;
+            margin: 0 auto;
+    		border-radius: 20px;
+        }
+
+        #options label {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="options">
+        <h4>How Youtube videos will be looped?</h4>
+        <input id="alwaysLoop" type="radio" name="alwaysLoop" value="1">
+        <label for="alwaysLoop">Always loop by default</label> <br/>
+
+        <input id="loopPerPage" type="radio" name="alwaysLoop" value="0">
+        <label for="loopPerPage">Don't loop by default, I'll loop it from page</label> <br/>
+    </div>
+    <script>
+        var alwaysLoop = document.getElementById('alwaysLoop'),
+            loopPerPage = document.getElementById('loopPerPage');
+
+        alwaysLoop.addEventListener('change', function() {
+            widget.preferences.alwaysLoop = this.value;
+        }, false );
+
+        loopPerPage.addEventListener( 'change', function() {
+            widget.preferences.alwaysLoop = this.value;
+        }, false );
+
+        if (widget.preferences.alwaysLoop == 1) {
+            alwaysLoop.checked = true;
+        }
+        else {
+            loopPerPage.checked = true;
+        }
+	</script>
+	</body>
+</html>
