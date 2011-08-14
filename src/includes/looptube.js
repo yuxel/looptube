@@ -73,7 +73,7 @@
                 };
             };
 
-            var state = widget.preferences.alwaysLoop ? true : false;
+            var state = (widget.preferences.alwaysLoop == 1)? true : false;
             createButton(state);
         }
     }, false);
