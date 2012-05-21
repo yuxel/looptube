@@ -16,22 +16,31 @@
         var timer,
             interval = 1000; //1 second
 
-        //get player element for YouTube JS API
-        var player = document.getElementById('movie_player');
+        //get playerSwf element for YouTube JS API
+        var playerSwf = document.getElementById('movie_player'),
+            playerHTML5 = document.getElementsByTagName("video") && document.getElementsByTagName("video")[0],
+            loopActive = false;
 
-        if (player) {
-
+        if (playerSwf || playerHTML5) {
             var callback = function () {
-                if (player.getPlayerState() === 0) {
-                    player.seekTo(0);
+                if (playerSwf.getPlayerState() === 0) {
+                    playerSwf.seekTo(0);
+                    playerSwf.playVideo();
                 }
             };
 
             var startLoop = function () {
-                timer = setInterval(callback, interval);
+                loopActive = true;
+                if (playerSwf) {
+                    timer = setInterval(callback, interval);
+                }
+                if (playerHTML5 && playerHTML5.ended) {
+                    playerHTML5.play();
+                }
             };
 
             var stopLoop = function () {
+                loopActive = false;
                 clearInterval(timer);
             };
 
@@ -75,6 +84,15 @@
 
             var state = (widget.preferences.alwaysLoop == 1)? true : false;
             createButton(state);
+
+            if (playerHTML5) {
+                playerHTML5.addEventListener("ended", function () {
+                    if (loopActive) {
+                        playerHTML5.play();
+                    }
+                }, false);
+            }
         }
+
     }, false);
 }(document));
